@@ -2,8 +2,7 @@ from fastapi import HTTPException
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from .. import security
-from ..user import models as users
+from .. import security, user_models
 from . import schemas
 
 
@@ -11,7 +10,9 @@ async def ensure_email_not_registered(
     db: AsyncSession,
     email: str,
 ) -> None:
-    existing_user = await db.scalar(select(users.User).where(users.User.email == email))
+    existing_user = await db.scalar(
+        select(user_models.User).where(user_models.User.email == email)
+    )
 
     if existing_user:
         raise HTTPException(
@@ -23,13 +24,13 @@ async def ensure_email_not_registered(
 async def create_mahasiswa(
     db: AsyncSession,
     data: schemas.MahasiswaCreate,
-) -> users.Mahasiswa:
+) -> user_models.Mahasiswa:
     await ensure_email_not_registered(
         db,
         data.email,
     )
 
-    mahasiswa = users.Mahasiswa(
+    mahasiswa = user_models.Mahasiswa(
         email=data.email,
         nama=data.nama,
         password=security.get_password_hash(data.password),
@@ -50,13 +51,13 @@ async def create_mahasiswa(
 async def create_toko(
     db: AsyncSession,
     data: schemas.TokoCreate,
-) -> users.Toko:
+) -> user_models.Toko:
     await ensure_email_not_registered(
         db,
         data.email,
     )
 
-    toko = users.Toko(
+    toko = user_models.Toko(
         email=data.email,
         nama=data.nama,
         password=security.get_password_hash(data.password),

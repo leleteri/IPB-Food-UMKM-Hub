@@ -6,9 +6,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import Uuid, select
 
 from . import schemas
-from .. import security
+from .. import security, user_models
 from ..dependencies import get_db
-from ..user import models as user_models
 
 
 async def auth_user(

@@ -7,7 +7,7 @@ class Base(DeclarativeBase):
 
 
 DATABASE_URL = (
-    "postgresql+asyncpg://student_hub_web:aadh123456@localhost/student_hub_web"
+    "postgresql+asyncpg://student_hub_web:student_hub_web@localhost/student_hub_web"
 )
 
 engine = create_async_engine(

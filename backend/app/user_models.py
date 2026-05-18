@@ -1,16 +1,18 @@
-from uuid import UUID
+from uuid import UUID, uuid4
 from decimal import Decimal
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
-from sqlalchemy import ForeignKey, String, Numeric
+from sqlalchemy import ForeignKey, String, Numeric, Uuid
 
 from datetime import datetime
-from ..database import Base
+from .database import Base
 
 
 class User(Base):
     __tablename__ = "users"
 
-    user_id: Mapped[UUID] = mapped_column(primary_key=True)
+    user_id: Mapped[UUID] = mapped_column(
+        Uuid(as_uuid=True), primary_key=True, default=uuid4
+    )
     email: Mapped[str] = mapped_column(unique=True, nullable=False)
     nama: Mapped[str] = mapped_column(nullable=False)
     password: Mapped[str] = mapped_column(nullable=False)
