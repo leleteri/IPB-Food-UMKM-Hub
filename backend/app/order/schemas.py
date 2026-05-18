@@ -11,3 +11,9 @@ class DetailPesananCreate(BaseModel):
 class PesananCreate(BaseModel):
     toko_id: UUID
     detail_pesanan: list[DetailPesananCreate]
+
+
+class ProdukCreate(BaseModel):
+    nama_produk: str
+    stok: int
+    deskripsi: str

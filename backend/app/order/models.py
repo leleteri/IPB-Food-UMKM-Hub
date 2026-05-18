@@ -3,7 +3,7 @@ from datetime import datetime
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 from sqlalchemy import ForeignKey, String, Numeric
 
-from backend.app.database import Base
+from ..database import Base
 
 
 class Produk(Base):

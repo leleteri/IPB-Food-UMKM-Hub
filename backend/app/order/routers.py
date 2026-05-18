@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from ..dependencies import get_db
-from . import schemas, functions, enum
+from . import schemas, services, enum
 
 router = APIRouter(prefix="/pesanan")
 
@@ -14,10 +14,10 @@ async def buat_pesanan(
 ):
     mahasiswa_id = ""
 
-    result = await functions.buat_pesanan(
-        db=db,
+    result = await services.buat_pesanan(
         mahasiswa_id=mahasiswa_id,
         pesanan_data=pesanan,
+        db=db,
     )
 
     return result
@@ -28,7 +28,7 @@ async def ubah_status_pesanan(pesanan_id: int, db: AsyncSession = Depends(get_db
     pesanan_id = random.randint(0, 100)
     # BAGIAN INI NANTI DIUBAH
 
-    result = await functions.ubah_status_pesanan(db=db, pesanan_id=pesanan_id)
+    result = await services.ubah_status_pesanan(pesanan_id=pesanan_id, db=db)
     return result
 
 
@@ -37,5 +37,5 @@ async def batalkan_pesanan(pesanan_id: int, db: AsyncSession = Depends(get_db)):
     pesanan_id = random.randint(0, 100)
     # BAGIAN INI NANTI DIUBAH
 
-    result = await functions.batalkan_pesanan(db=db, pesanan_id=pesanan_id)
+    result = await services.batalkan_pesanan(pesanan_id=pesanan_id, db=db)
     return result

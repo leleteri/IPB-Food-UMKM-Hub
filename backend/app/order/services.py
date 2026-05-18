@@ -1,13 +1,17 @@
 from datetime import datetime
 from uuid import UUID
-from fastapi import HTTPException
+from fastapi import Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
+
 from . import models, schemas, enum
+from ..dependencies import get_db
 
 
 async def buat_pesanan(
-    db: AsyncSession, mahasiswa_id: UUID, pesanan_data: schemas.PesananCreate
+    mahasiswa_id,
+    pesanan_data: schemas.PesananCreate,
+    db: AsyncSession = Depends(get_db),
 ):
     new_pesanan = models.Pesanan(
         mahasiswa_id=mahasiswa_id,
@@ -68,7 +72,7 @@ async def buat_pesanan(
     return new_pesanan
 
 
-async def ubah_status_pesanan(db: AsyncSession, pesanan_id: int):
+async def ubah_status_pesanan(pesanan_id: int, db: AsyncSession = Depends(get_db)):
     pesanan = await db.scalar(
         select(models.Pesanan).where(models.Pesanan.pesanan_id == pesanan_id)
     )
@@ -93,7 +97,7 @@ async def ubah_status_pesanan(db: AsyncSession, pesanan_id: int):
     return pesanan
 
 
-async def batalkan_pesanan(db: AsyncSession, pesanan_id: int):
+async def batalkan_pesanan(pesanan_id: int, db: AsyncSession = Depends(get_db)):
     pesanan = await db.scalar(
         select(models.Pesanan).where(models.Pesanan.pesanan_id == pesanan_id)
     )
@@ -111,3 +115,12 @@ async def batalkan_pesanan(db: AsyncSession, pesanan_id: int):
     await db.commit()
 
     return pesanan
+
+
+async def tambah_produk(
+    produk_data: schemas.ProdukCreate, tokto_id, db: AsyncSession = Depends(get_db)
+):
+    new_produk = models.Produk(
+        nama=produk_data.nama_produk,
+        deskripsi=produk_data.deskripsi,
+    )

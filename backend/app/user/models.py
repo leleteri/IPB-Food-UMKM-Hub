@@ -4,7 +4,7 @@ from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 from sqlalchemy import ForeignKey, String, Numeric
 
 from datetime import datetime
-from backend.app.database import Base
+from ..database import Base
 
 
 class User(Base):
@@ -13,6 +13,7 @@ class User(Base):
     user_id: Mapped[UUID] = mapped_column(primary_key=True)
     email: Mapped[str] = mapped_column(unique=True, nullable=False)
     nama: Mapped[str] = mapped_column(nullable=False)
+    password: Mapped[str] = mapped_column(nullable=False)
     nomor_telepon: Mapped[str] = mapped_column(nullable=False)
     role: Mapped[str] = mapped_column(nullable=False)
 

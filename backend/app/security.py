@@ -4,7 +4,7 @@ from jose import jwt
 from passlib.context import CryptContext
 from sqlalchemy.util import deprecated
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated=auto)
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 SECRET_KEY = ""
 ALGORITHM = "HS256"
