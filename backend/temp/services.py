@@ -4,8 +4,9 @@ from fastapi import Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 
-from . import models, schemas, enum
-from ..dependencies import get_db
+from . import models, schemas
+from app import enum
+from app.dependencies import get_db
 
 
 async def buat_pesanan(

@@ -2,17 +2,16 @@ from fastapi import HTTPException
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from .. import security, user_models
+from app.security import get_password_hash
+from app.user_models import User, Mahasiswa, Toko
 from . import schemas
 
 
 async def ensure_email_not_registered(
     db: AsyncSession,
     email: str,
-) -> None:
-    existing_user = await db.scalar(
-        select(user_models.User).where(user_models.User.email == email)
-    )
+):
+    existing_user = await db.scalar(select(User).where(User.email == email))
 
     if existing_user:
         raise HTTPException(
@@ -24,16 +23,16 @@ async def ensure_email_not_registered(
 async def create_mahasiswa(
     db: AsyncSession,
     data: schemas.MahasiswaCreate,
-) -> user_models.Mahasiswa:
+):
     await ensure_email_not_registered(
         db,
         data.email,
     )
 
-    mahasiswa = user_models.Mahasiswa(
+    mahasiswa = Mahasiswa(
         email=data.email,
         nama=data.nama,
-        password=security.get_password_hash(data.password),
+        password=get_password_hash(data.password),
         nomor_telepon=data.nomor_telepon,
         role="mahasiswa",
         nim=data.nim,
@@ -51,16 +50,16 @@ async def create_mahasiswa(
 async def create_toko(
     db: AsyncSession,
     data: schemas.TokoCreate,
-) -> user_models.Toko:
+):
     await ensure_email_not_registered(
         db,
         data.email,
     )
 
-    toko = user_models.Toko(
+    toko = Toko(
         email=data.email,
         nama=data.nama,
-        password=security.get_password_hash(data.password),
+        password=get_password_hash(data.password),
         nomor_telepon=data.nomor_telepon,
         role="toko",
         kantin=data.kantin,

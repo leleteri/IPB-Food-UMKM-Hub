@@ -6,18 +6,15 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import Uuid, select
 
 from . import schemas
-from .. import security, user_models
-from ..dependencies import get_db
+from .. import security
+from app.user_models import User
+from app.dependencies import get_db
 
 
 async def auth_user(
     form_data: schemas.LoginRequest, db: AsyncSession = Depends(get_db)
-) -> user_models.User | None:
-    result = await db.execute(
-        select(user_models.User).where(user_models.User.email == form_data.email)
-    )
-
-    user = result.scalar_one_or_none()
+) -> User | None:
+    user = await db.scalar(select(User).where(User.email == form_data.email))
 
     if user is None:
         return None

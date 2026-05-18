@@ -2,8 +2,9 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from .auth import routers as auth
-from .order import routers as order
+from app.auth import routers as auth
+from app.pesanan import routers as pesanan
+from app.toko import routers as toko
 
 app = FastAPI()
 
@@ -18,7 +19,8 @@ app.add_middleware(
 )
 
 app.include_router(auth.router)
-app.include_router(order.router)
+app.include_router(pesanan.router)
+app.include_router(toko.router)
 
 
 @app.get("/")

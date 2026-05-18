@@ -39,7 +39,8 @@ class Toko(User):
     __tablename__ = "toko"
 
     user_id: Mapped[UUID] = mapped_column(ForeignKey("users.user_id"), primary_key=True)
-    kantin_id: Mapped[UUID] = mapped_column(ForeignKey("kantin.kantin_id"))
+    kantin_id: Mapped[int] = mapped_column(ForeignKey("kantin.kantin_id"))
+    foto: Mapped[int] = mapped_column()
     tanggal_diajukan: Mapped[datetime] = mapped_column()
     tanggal_diterima: Mapped[datetime] = mapped_column()
     status_buka: Mapped[bool] = mapped_column()
@@ -47,12 +48,16 @@ class Toko(User):
     rating_count: Mapped[int] = mapped_column(default=0)
     rating_avg: Mapped[Decimal] = mapped_column(Numeric(2, 1))
 
+    kantin: Mapped["Kantin"] = relationship(back_populates="daftar_toko")
+
     __mapper_args__ = {"polymorphic_identity": "toko"}
 
 
 class Kantin(Base):
     __tablename__ = "kantin"
 
-    kantin_id: Mapped[UUID] = mapped_column(primary_key=True)
+    kantin_id: Mapped[int] = mapped_column(primary_key=True)
     nama: Mapped[str] = mapped_column()
     alamat: Mapped[str] = mapped_column()
+
+    daftar_toko: Mapped[list["Toko"]] = relationship(back_populates="kantin")

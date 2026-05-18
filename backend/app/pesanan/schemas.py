@@ -1,3 +1,4 @@
+from datetime import datetime
 from uuid import UUID
 from pydantic import BaseModel
 
@@ -9,11 +10,14 @@ class DetailPesananCreate(BaseModel):
 
 
 class PesananCreate(BaseModel):
-    toko_id: UUID
     detail_pesanan: list[DetailPesananCreate]
 
 
-class ProdukCreate(BaseModel):
-    nama_produk: str
-    stok: int
-    deskripsi: str
+class PesananResponse(BaseModel):
+    pesanan_id: int
+    mahasiswa_id: UUID
+    toko_id: UUID
+    tanggal: datetime
+    total_harga: int
+    total_bayar: int
+    status: str

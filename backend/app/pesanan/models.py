@@ -1,9 +1,9 @@
 from uuid import UUID
 from datetime import datetime
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import ForeignKey, String, Numeric
 
-from ..database import Base
+from app.database import Base
 
 
 class Produk(Base):
@@ -19,6 +19,10 @@ class Produk(Base):
     kategori: Mapped[str] = mapped_column()
     diskon_berlaku: Mapped[int] = mapped_column()
 
+    detail_pesanan: Mapped[list["DetailPesanan"]] = relationship(
+        back_populates="produk"
+    )
+
 
 class Pesanan(Base):
     __tablename__ = "pesanan"
@@ -31,6 +35,10 @@ class Pesanan(Base):
     total_bayar: Mapped[int] = mapped_column(default=0)
     status: Mapped[str] = mapped_column(nullable=False)
 
+    detail_pesanan: Mapped[list["DetailPesanan"]] = relationship(
+        back_populates="pesanan"
+    )
+
 
 class DetailPesanan(Base):
     __tablename__ = "detail_pesanan"
@@ -42,3 +50,6 @@ class DetailPesanan(Base):
     jumlah_beli: Mapped[int] = mapped_column(default=0)
     subtotal_harga: Mapped[int] = mapped_column()
     catatan: Mapped[str] = mapped_column(String(100))
+
+    pesanan: Mapped["Pesanan"] = relationship(back_populates="detail_pesanan")
+    produk: Mapped["Produk"] = relationship(back_populates="detail_pesanan")
