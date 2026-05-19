@@ -3,8 +3,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.user_models import User
-from app.dependencies import get_db
-from app.auth.deps import require_role
+from app.dependencies import get_db, require_role
 from . import schemas, services, deps
 
 router = APIRouter(prefix="/pesanan")

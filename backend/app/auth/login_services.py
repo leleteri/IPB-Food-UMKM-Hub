@@ -12,8 +12,8 @@ from app.dependencies import get_db
 
 
 async def auth_user(
-    form_data: schemas.LoginRequest, db: AsyncSession = Depends(get_db)
-) -> User | None:
+    form_data: schemas.TokenRequest, db: AsyncSession = Depends(get_db)
+):
     user = await db.scalar(select(User).where(User.email == form_data.email))
 
     if user is None:

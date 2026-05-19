@@ -3,9 +3,10 @@ from pydantic import BaseModel, EmailStr
 
 class UserCreate(BaseModel):
     email: EmailStr
-    nama: str
-    nomor_telepon: str
     password: str
+    nama: str
+    foto: str | None = None
+    nomor_telepon: str
 
 
 class MahasiswaCreate(UserCreate):
@@ -14,10 +15,10 @@ class MahasiswaCreate(UserCreate):
 
 
 class TokoCreate(UserCreate):
-    kantin: str
+    kantin_id: int | None = 0
 
 
-class LoginRequest(BaseModel):
+class TokenRequest(BaseModel):
     email: EmailStr
     password: str
 

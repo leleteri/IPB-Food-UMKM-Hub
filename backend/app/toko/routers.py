@@ -5,8 +5,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.dependencies import get_db
-from app.auth.deps import require_role
+from app.dependencies import get_db, require_role
 from app.user_models import User
 from . import deps, schemas, services
 

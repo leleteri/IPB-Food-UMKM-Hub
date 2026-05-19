@@ -14,8 +14,9 @@ class User(Base):
         Uuid(as_uuid=True), primary_key=True, default=uuid4
     )
     email: Mapped[str] = mapped_column(unique=True, nullable=False)
-    nama: Mapped[str] = mapped_column(nullable=False)
     password: Mapped[str] = mapped_column(nullable=False)
+    nama: Mapped[str] = mapped_column(nullable=False)
+    foto: Mapped[int] = mapped_column()
     nomor_telepon: Mapped[str] = mapped_column(nullable=False)
     role: Mapped[str] = mapped_column(nullable=False)
 
@@ -40,13 +41,12 @@ class Toko(User):
 
     user_id: Mapped[UUID] = mapped_column(ForeignKey("users.user_id"), primary_key=True)
     kantin_id: Mapped[int] = mapped_column(ForeignKey("kantin.kantin_id"))
-    foto: Mapped[int] = mapped_column()
     tanggal_diajukan: Mapped[datetime] = mapped_column()
     tanggal_diterima: Mapped[datetime] = mapped_column()
     status_buka: Mapped[bool] = mapped_column()
     jenis_toko: Mapped[str] = mapped_column(String(20))
     rating_count: Mapped[int] = mapped_column(default=0)
-    rating_avg: Mapped[Decimal] = mapped_column(Numeric(2, 1))
+    rating_avg: Mapped[Decimal] = mapped_column(Numeric(2, 1), default=0.0)
 
     kantin: Mapped["Kantin"] = relationship(back_populates="daftar_toko")
 
