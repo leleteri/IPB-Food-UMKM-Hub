@@ -6,6 +6,7 @@ from app.user_models import User
 from app.pesanan.models import Produk
 from app.dependencies import verify_exists
 from . import schemas
+from .promo_models import Promo
 
 from sqlalchemy import select
 
@@ -68,3 +69,12 @@ async def ubah_detail_produk(
     await db.refresh(produk)
 
     return produk
+
+
+async def add_promo(promo_data: schemas.PromoCreate, db: AsyncSession):
+    new_promo = Promo(
+        minimum_harga=promo_data.minimum_harga,
+        nominal_potongan=promo_data.nominal_potongan,
+        tanggal_berlaku=promo_data.tanggal_berlaku,
+        tanggal_musnah=promo_data.tanggal_musnah,
+    )

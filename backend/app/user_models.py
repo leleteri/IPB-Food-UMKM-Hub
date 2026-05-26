@@ -16,7 +16,7 @@ class User(Base):
     email: Mapped[str] = mapped_column(unique=True, nullable=False)
     password: Mapped[str] = mapped_column(nullable=False)
     nama: Mapped[str] = mapped_column(nullable=False)
-    foto: Mapped[int] = mapped_column()
+    foto: Mapped[str] = mapped_column(nullable=True)
     nomor_telepon: Mapped[str] = mapped_column(nullable=False)
     role: Mapped[str] = mapped_column(nullable=False)
 

@@ -5,7 +5,7 @@ class UserCreate(BaseModel):
     email: EmailStr
     password: str
     nama: str
-    foto: str | None = None
+    foto: str | None = ""
     nomor_telepon: str
 
 

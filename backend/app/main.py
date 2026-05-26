@@ -5,6 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.auth import routers as auth
 from app.pesanan import routers as pesanan
 from app.toko import routers as toko
+from app.admin import routers as admin
 
 app = FastAPI()
 
@@ -21,6 +22,7 @@ app.add_middleware(
 app.include_router(auth.router)
 app.include_router(pesanan.router)
 app.include_router(toko.router)
+app.include_router(admin.router)
 
 
 @app.get("/")

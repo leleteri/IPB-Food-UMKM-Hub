@@ -1,3 +1,4 @@
+from datetime import datetime
 from decimal import Decimal
 from uuid import UUID
 from pydantic import BaseModel, ConfigDict
@@ -58,3 +59,10 @@ class ProdukResponse(ProdukBase):
     produk_id: int
 
     model_config = ConfigDict(from_attributes=True)
+
+
+class PromoCreate(BaseModel):
+    minimum_harga: int
+    nominal_potongan: int
+    tanggal_berlaku: datetime
+    tanggal_musnah: datetime

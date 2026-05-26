@@ -9,7 +9,7 @@ from app.dependencies import get_db, require_role
 from app.user_models import User
 from . import deps, schemas, services
 
-router = APIRouter(prefix="/toko")
+router = APIRouter(prefix="/toko", tags=["toko"])
 
 
 @router.get("/", response_model=list[schemas.TokoResponse])

@@ -6,7 +6,7 @@ from app.user_models import User
 from app.dependencies import get_db, require_role
 from . import schemas, services, deps
 
-router = APIRouter(prefix="/pesanan")
+router = APIRouter(prefix="/pesanan", tags=["Pesanan"])
 
 
 @router.post("/buat")

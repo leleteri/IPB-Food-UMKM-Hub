@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from . import schemas, login_services, register_services
 from app.dependencies import get_db
 
-router = APIRouter(prefix="/auth")
+router = APIRouter(prefix="/auth", tags=["Authentication"])
 
 
 @router.post(path="/register/mahasiswa")
@@ -45,7 +45,7 @@ async def toko_register(
 
 
 @router.post(path="/login")
-async def login(credentials: schemas.LoginRequest, db: AsyncSession = Depends(get_db)):
+async def login(credentials: schemas.TokenRequest, db: AsyncSession = Depends(get_db)):
     user = await login_services.auth_user(form_data=credentials, db=db)
 
     if user is None:
