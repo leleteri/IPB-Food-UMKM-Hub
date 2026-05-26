@@ -11,6 +11,7 @@ class DetailPesananCreate(BaseModel):
 
 class PesananCreate(BaseModel):
     detail_pesanan: list[DetailPesananCreate]
+    promo_id: int
 
 
 class PesananResponse(BaseModel):

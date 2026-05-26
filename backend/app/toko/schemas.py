@@ -64,5 +64,4 @@ class ProdukResponse(ProdukBase):
 class PromoCreate(BaseModel):
     minimum_harga: int
     nominal_potongan: int
-    tanggal_berlaku: datetime
     tanggal_musnah: datetime

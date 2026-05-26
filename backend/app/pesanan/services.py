@@ -8,6 +8,8 @@ from sqlalchemy import select
 from . import schemas
 from .models import Pesanan, DetailPesanan, Produk
 from app import enum
+from app.dependencies import verify_exists
+from app.toko.promo_models import Promo
 
 
 async def buat_pesanan(
@@ -16,6 +18,8 @@ async def buat_pesanan(
     pesanan_data: schemas.PesananCreate,
     db: AsyncSession,  # Remove Depends here, move to router
 ):
+    now = datetime.now()
+
     product_ids = [item.produk_id for item in pesanan_data.detail_pesanan]
 
     result = await db.execute(select(Produk).where(Produk.produk_id.in_(product_ids)))
@@ -59,7 +63,28 @@ async def buat_pesanan(
         total_harga += subtotal
 
     new_pesanan.total_harga = total_harga
-    new_pesanan.total_bayar = total_harga  # Adjust if there's an app fee or discount
+
+    if pesanan_data.promo_id:
+        promo_stmt = select(Promo).where(
+            Promo.promo_id == pesanan_data.promo_id,
+            Promo.toko_id == toko_id,  # Only allow promos from THIS store
+        )
+        promo = verify_exists(await db.scalar(promo_stmt), "Promo")
+
+        if now < promo.tanggal_berlaku:
+            raise HTTPException(400, "Promo belum dimulai")
+        if now > promo.tanggal_musnah:
+            raise HTTPException(400, "Promo sudah kedaluwarsa")
+
+        if total_harga < promo.minimum_harga:
+            raise HTTPException(
+                400,
+                f"Total harga ({total_harga}) belum mencapai syarat promo ({promo.minimum_harga})",
+            )
+
+        new_pesanan.total_bayar = max(0, total_harga - promo.nominal_potongan)
+    else:
+        new_pesanan.total_bayar = total_harga
 
     await db.commit()
     await db.refresh(new_pesanan)

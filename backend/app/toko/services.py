@@ -1,3 +1,4 @@
+from datetime import datetime
 from fastapi import HTTPException, status
 from sqlalchemy import delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -71,10 +72,18 @@ async def ubah_detail_produk(
     return produk
 
 
-async def add_promo(promo_data: schemas.PromoCreate, db: AsyncSession):
+async def add_promo(
+    promo_data: schemas.PromoCreate, current_user: User, db: AsyncSession
+):
     new_promo = Promo(
-        minimum_harga=promo_data.minimum_harga,
-        nominal_potongan=promo_data.nominal_potongan,
-        tanggal_berlaku=promo_data.tanggal_berlaku,
-        tanggal_musnah=promo_data.tanggal_musnah,
+        **promo_data.model_dump(),
+        toko_id=current_user.user_id,
+        tanggal_berlaku=datetime.now(),
     )
+
+    db.add(new_promo)
+
+    await db.commit()
+    await db.refresh(new_promo)
+
+    return new_promo
