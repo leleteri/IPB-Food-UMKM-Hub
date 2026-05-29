@@ -14,6 +14,15 @@ class KantinBase(BaseModel):
 class TokoBase(BaseModel):
     nama: str
     foto: str
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class TokoEdit(TokoBase):
+    pass
+
+
+class TokoRebase(TokoBase):
     status_buka: str
     jenis_toko: str
     rating_count: int
@@ -27,10 +36,14 @@ class KantinResponse(KantinBase):
     daftar_toko: list[TokoBase]
 
 
-class TokoResponse(TokoBase):
+class TokoResponse(TokoRebase):
     user_id: UUID
     kantin_id: int
     kantin: KantinBase
+
+
+class TokoEditStatus(BaseModel):
+    status_buka: str
 
 
 class ProdukBase(BaseModel):
@@ -62,6 +75,7 @@ class ProdukResponse(ProdukBase):
 
 
 class PromoCreate(BaseModel):
+    nama: str
     minimum_harga: int
     nominal_potongan: int
     tanggal_musnah: datetime

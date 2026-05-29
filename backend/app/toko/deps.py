@@ -3,6 +3,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.pesanan.models import Produk
 from app.dependencies import verify_exists
+from .promo_models import Promo
 from app.user_models import Toko, Kantin
 
 
@@ -30,3 +31,11 @@ async def get_produk_by_toko(toko_id: UUID, db: AsyncSession):
     return await db.scalars(
         select(order_models.Produk).where(Produk.toko_id == toko.user_id)
     )
+
+
+async def get_promo_by_id(
+    promo_id: int,
+    db: AsyncSession,
+):
+    promo = select(Promo).where(Promo.promo_id == promo_id)
+    return verify_exists(promo, "Promo")

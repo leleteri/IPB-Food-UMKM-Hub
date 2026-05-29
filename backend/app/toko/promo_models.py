@@ -10,6 +10,7 @@ class Promo(Base):
 
     promo_id: Mapped[int] = mapped_column(primary_key=True)
     toko_id: Mapped[UUID] = mapped_column(ForeignKey("toko.user_id"))
+    nama: Mapped[str] = mapped_column()
     minimum_harga: Mapped[int] = mapped_column()
     nominal_potongan: Mapped[int] = mapped_column()
     tanggal_berlaku: Mapped[datetime] = mapped_column()
