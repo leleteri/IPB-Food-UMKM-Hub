@@ -17,10 +17,16 @@ router = APIRouter(prefix="/toko", tags=["toko"])
 async def list_toko(db: AsyncSession = Depends(get_db)):
     return await deps.get_toko_list(db=db)
 
+
 @router.patch("/me")
 async def ubah_detail_toko(
-    current_user: User = Depends(require_role(enum.ROLE_TOKO))
+    form_data: schemas.TokoEdit,
+    current_user: User = Depends(require_role(enum.ROLE_TOKO)),
+    db: AsyncSession = Depends(get_db),
 ):
+    return await services.ubah_detail_toko(
+        form_data=form_data, current_user=current_user, db=db
+    )
 
 
 @router.get("/{toko_id}", response_model=schemas.TokoResponse)
