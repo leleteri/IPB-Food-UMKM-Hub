@@ -1,4 +1,5 @@
 from datetime import datetime
+from uuid import UUID
 from fastapi import HTTPException, status
 from sqlalchemy import delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -72,7 +73,22 @@ async def ubah_detail_produk(
     return produk
 
 
-async def add_promo(
+async def ubah_detail_toko(
+    form_data: schemas.TokoEdit, current_user: User, db: AsyncSession
+):
+    toko = await db.scalar(select(User).where(User.user_id == current_user.user_id))
+    update_data = form_data.model_dump(exclude_unset=True)
+
+    for key, value in update_data.items():
+        setattr(toko, key, value)
+
+    await db.commit()
+    await db.refresh(toko)
+
+    return toko
+
+
+async def tambah_promo(
     promo_data: schemas.PromoCreate, current_user: User, db: AsyncSession
 ):
     new_promo = Promo(
